@@ -1,0 +1,54 @@
+package com.example.oauthtest;
+
+import io.dropwizard.Application;
+
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
+import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
+
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
+
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
+
+//import com.example.oauthtest.ExampleOAuthAuthenticator;
+import com.example.oauthtest.User;
+import com.example.oauthtest.AuthAppConfiguration;
+
+import com.example.oauthtest.resources.TwitterResource;
+
+
+public class AuthApp extends Application<AuthAppConfiguration> {
+    @Override
+    public String getName() {
+        return "auth-app";
+    }
+    
+    @Override
+    public void initialize(Bootstrap<AuthAppConfiguration> b) {
+    }
+
+    @Override
+    public void run(AuthAppConfiguration configuration,
+		    Environment environment) {
+	environment.jersey().register(new AuthDynamicFeature(
+							     new OAuthCredentialAuthFilter.Builder<User>()
+							     .setAuthenticator(new TwitterResource())
+							     .setPrefix("Bearer")
+							     .buildAuthFilter()));
+
+	environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
+
+	/*
+	final AuthAppResource resource = new AuthAppResource(
+								   configuration.getTemplate(),
+								   configuration.getDefaultName()
+								   );
+								   environment.jersey().register(resource);*/
+    }
+
+    public static void main(String[] args) throws Exception {
+	new AuthApp().run(args);
+    }
+}

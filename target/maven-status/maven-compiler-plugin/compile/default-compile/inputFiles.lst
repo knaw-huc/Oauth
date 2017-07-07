@@ -1,0 +1,5 @@
+/home/pjoshi04/huygens/oauth/src/main/java/com/example/helloworld/HelloWorldApplication.java
+/home/pjoshi04/huygens/oauth/src/main/java/com/example/helloworld/api/Saying.java
+/home/pjoshi04/huygens/oauth/src/main/java/com/example/helloworld/HelloWorldConfiguration.java
+/home/pjoshi04/huygens/oauth/src/main/java/com/example/helloworld/resources/HelloWorldResource.java
+/home/pjoshi04/huygens/oauth/src/main/java/com/example/helloworld/health/TemplateHealthCheck.java
