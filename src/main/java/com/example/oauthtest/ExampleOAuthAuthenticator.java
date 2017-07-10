@@ -1,6 +1,8 @@
 
 package com.example.oauthtest;
 
+import com.github.scribejava.core.model.Response;
+import io.dropwizard.Configuration;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
 import io.dropwizard.auth.basic.BasicCredentials;
@@ -13,47 +15,33 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.base.Optional;
 
 
+import org.jvnet.hk2.internal.SystemDescriptor;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
+import twitter4j.conf.ConfigurationBuilder;
 
-import com.github.scribejava.core.builder.ServiceBuilder;
-import com.github.scribejava.apis.TwitterApi;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Token;
-import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.oauth.OAuthService;
-
-
+import java.util.UUID;
 
 public class ExampleOAuthAuthenticator implements Authenticator<String, User> {
 
     @Override
     public Optional<User> authenticate(String credentials) throws AuthenticationException {
+        Twitter twitter = TwitterFactory.getSingleton();
+        twitter.setOAuthConsumer("bzY4pW3bdU3UbcDmsotJE5S54", "9Dp2IfbDPpS8mMhB8CA9eBgOQP1fGTLguE0oAzrY98m02kBkmp");
+        RequestToken requestToken = null;
 
-	final OAuthService service = new ServiceBuilder()
-	    .apiKey("")
-	    .apiSecret("")
-	    .provider(TwitterApi.class);
+        try {
+            requestToken = twitter.getOAuthRequestToken();
+            String authURL = requestToken.getAuthorizationURL();
+            System.out.println(authURL);
+        } catch (TwitterException e){
 
-	
-        //final Token requestToken = service.getRequestToken();
-	
+        }
 
-	final String requestToken = service.getAuthorizationUrl();
-	/*
-	  String authUrl = service.getAuthorizationUrl(requestToken);
 
-	final Token accessToken = service.getAccessToken(requestToken, "verifier you got from the user/callback");
-
-	final OAuthRequest request = new OAuthRequest(Verb.GET, "https://api.twitter.com/1.1/account/verify_credentials.json", service);
-	service.signRequest(accessToken, request); // the access token from step 4
-	final Response response = service.execute(request);
-	*/
-	System.out.println(service);
-	return Optional.absent();
-	/*
-	if ("secret".equals(credentials.getPassword())) {
-	    return Optional.of(new User(credentials.getUsername()));
-	}
-	return Optional.absent();
-	*/
+        return Optional.of(new User("testuser"));
     }
 }

@@ -32,5 +32,7 @@ public class AuthAppConfiguration extends Configuration {
 	public void setDefaultName(String name) {
 	    this.defaultName = name;
 	}
+
+
 }
 

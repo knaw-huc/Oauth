@@ -1,0 +1,11 @@
+com/example/oauthtest/ExampleAuthenticator.class
+com/example/oauthtest/AuthAppConfiguration.class
+com/example/helloworld/api/Saying.class
+com/example/helloworld/HelloWorldApplication.class
+com/example/helloworld/resources/HelloWorldResource.class
+com/example/helloworld/health/TemplateHealthCheck.class
+com/example/helloworld/HelloWorldConfiguration.class
+com/example/oauthtest/ExampleOAuthAuthenticator.class
+com/example/oauthtest/User.class
+com/example/oauthtest/resources/AuthAppResource.class
+com/example/oauthtest/AuthApp.class

@@ -6,7 +6,7 @@ import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
 import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
-
+import com.example.oauthtest.resources.AuthAppResource;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -31,6 +31,7 @@ public class AuthApp extends Application<AuthAppConfiguration> {
     @Override
     public void run(AuthAppConfiguration configuration,
 		    Environment environment) {
+
 	environment.jersey().register(new AuthDynamicFeature(
 							     new OAuthCredentialAuthFilter.Builder<User>()
 							     .setAuthenticator(new ExampleOAuthAuthenticator())
@@ -39,12 +40,11 @@ public class AuthApp extends Application<AuthAppConfiguration> {
 
 	environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
 
-	/*
 	final AuthAppResource resource = new AuthAppResource(
 								   configuration.getTemplate(),
 								   configuration.getDefaultName()
 								   );
-								   environment.jersey().register(resource);*/
+								   environment.jersey().register(resource);
     }
 
     public static void main(String[] args) throws Exception {
