@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>JS Oauth2 test</title>
+  </head>
+  <body>
+
+    <button onclick="hello('google').login()">google</button>
+    <button onclick="hello('google').logout()">logout</button>
+      <script src="scripts/hello.all.js"></script>
+      <script>
+	hello.init({
+	    google: "997525708058-35bq46576o7flqnehag80iarordqs1r0.apps.googleusercontent.com",
+	},{
+	    //redirect_uri: "http://localhost:8080/auth-test"
+	  redirect_uri: "http://localhost:5000/"
+	});
+      </script>
+
+      <script>
+	hello.on('auth.login', function (auth) {
+
+	    hello(auth.network).api('/me').then(function (r) {
+	        var lab = document.createElement("div");
+	        lab.id = "token";
+
+	        var str = JSON.stringify(auth.authResponse, null, 2);
+	        lab.innerHTML = 'Authentication Response: ' + str;
+	        document.body.appendChild(lab);
+	    });
+
+	    var xmlhttp = new XMLHttpRequest();
+	    xmlhttp.onreadystatechange = function() {
+          if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+              console.log(xmlhttp.responseText);
+          }
+        }
+        xmlhttp.open("GET", "http://localhost:8080/auth-test");
+        xmlhttp.setRequestHeader("Authorization", "Bearer " + auth.authResponse.access_token);
+        xmlhttp.send();
+
+	});
+
+	hello.on('auth.logout', function () {
+	    var lab = document.getElementById("token");
+	    if (lab != null) document.body.removeChild( lab );
+	});
+      </script>
+
+      
+  </body>
+</html>

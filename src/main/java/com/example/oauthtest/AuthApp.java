@@ -32,19 +32,22 @@ public class AuthApp extends Application<AuthAppConfiguration> {
     public void run(AuthAppConfiguration configuration,
 		    Environment environment) {
 
-	environment.jersey().register(new AuthDynamicFeature(
-							     new OAuthCredentialAuthFilter.Builder<User>()
-							     .setAuthenticator(new ExampleOAuthAuthenticator())
-							     .setPrefix("Bearer")
-							     .buildAuthFilter()));
+
 
 	environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
+
 
 	final AuthAppResource resource = new AuthAppResource(
 								   configuration.getTemplate(),
 								   configuration.getDefaultName()
 								   );
 								   environment.jersey().register(resource);
+
+		environment.jersey().register(new AuthDynamicFeature(
+				new OAuthCredentialAuthFilter.Builder<User>()
+						.setAuthenticator(new ExampleOAuthAuthenticator())
+						.setPrefix("Bearer")
+						.buildAuthFilter()));
     }
 
     public static void main(String[] args) throws Exception {

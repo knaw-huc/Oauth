@@ -2,6 +2,7 @@
 /home/prath/huygens/Oauth/src/main/java/com/example/helloworld/HelloWorldConfiguration.java
 /home/prath/huygens/Oauth/src/main/java/com/example/helloworld/HelloWorldApplication.java
 /home/prath/huygens/Oauth/src/main/java/com/example/helloworld/health/TemplateHealthCheck.java
+/home/prath/huygens/Oauth/src/main/java/com/example/oauthtest/resources/AuthApp2Resource.java
 /home/prath/huygens/Oauth/src/main/java/com/example/oauthtest/AuthAppConfiguration.java
 /home/prath/huygens/Oauth/src/main/java/com/example/oauthtest/AuthApp.java
 /home/prath/huygens/Oauth/src/main/java/com/example/oauthtest/ExampleOAuthAuthenticator.java

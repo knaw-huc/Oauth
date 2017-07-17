@@ -29,6 +29,9 @@ public class ExampleOAuthAuthenticator implements Authenticator<String, User> {
 
     @Override
     public Optional<User> authenticate(String credentials) throws AuthenticationException {
+        System.out.println(credentials);
+
+        /*
         Twitter twitter = TwitterFactory.getSingleton();
         twitter.setOAuthConsumer("bzY4pW3bdU3UbcDmsotJE5S54", "9Dp2IfbDPpS8mMhB8CA9eBgOQP1fGTLguE0oAzrY98m02kBkmp");
         RequestToken requestToken = null;
@@ -40,8 +43,14 @@ public class ExampleOAuthAuthenticator implements Authenticator<String, User> {
         } catch (TwitterException e){
 
         }
+        */
+        if (credentials != null) {
+            System.out.println("authentication token found!");
+            return Optional.of(new User(credentials));
+        } else {
+            System.out.println("no authentication token found!");
+            return Optional.absent();
+        }
 
-
-        return Optional.of(new User("testuser"));
     }
 }
