@@ -559,19 +559,7 @@ hello.utils.extend(hello, {
 		else if (opts.display === 'popup') {
 
 			var popup = utils.popup(url, redirectUri, opts.popup);
-            //test
-
-                                                                var request = new XMLHttpRequest();
-                                                                var path="http://localhost:8080/auth-test"
-
-
-                                                                request.open("GET", path, true);
-                                                                request.setRequestHeader("Authorization",  "Bearer " + session.access_token );
-
-                                                                request.send(null);
-
-
-                                                            //end test
+          
 			var timer = setInterval(function() {
 				if (!popup || popup.closed) {
 					clearInterval(timer);

@@ -33,6 +33,5 @@ public class AuthAppConfiguration extends Configuration {
 	    this.defaultName = name;
 	}
 
-
 }
 

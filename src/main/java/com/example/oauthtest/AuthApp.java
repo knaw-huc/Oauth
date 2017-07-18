@@ -32,15 +32,12 @@ public class AuthApp extends Application<AuthAppConfiguration> {
     public void run(AuthAppConfiguration configuration,
 		    Environment environment) {
 
+		environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
 
-
-	environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
-
-
-	final AuthAppResource resource = new AuthAppResource(
-								   configuration.getTemplate(),
-								   configuration.getDefaultName()
-								   );
+		final AuthAppResource resource = new AuthAppResource(
+								   				configuration.getTemplate(),
+												configuration.getDefaultName()
+								   			);
 								   environment.jersey().register(resource);
 
 		environment.jersey().register(new AuthDynamicFeature(
@@ -51,6 +48,6 @@ public class AuthApp extends Application<AuthAppConfiguration> {
     }
 
     public static void main(String[] args) throws Exception {
-	new AuthApp().run(args);
+		new AuthApp().run(args);
     }
 }
