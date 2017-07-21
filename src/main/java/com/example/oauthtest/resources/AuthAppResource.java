@@ -15,8 +15,7 @@ import javax.ws.rs.core.Response;
 import java.util.concurrent.atomic.AtomicLong;
 
 
-
-@Path("/auth-test")
+@Path("/auth/example")
 @Produces(MediaType.APPLICATION_JSON)
 public class AuthAppResource {
     private final String template;
@@ -29,10 +28,19 @@ public class AuthAppResource {
 	    this.counter = new AtomicLong();
     }
 
-    @PermitAll
+    //@PermitAll
     @GET
+    @Path("/callback")
     @Timed
-    public Saying sayHello(@QueryParam("auth-test#client_id") Optional<String> name) {
+    public Saying sayHello2(@QueryParam("code") String code) {
+        System.out.println(code);
+        
+        return new Saying(counter.incrementAndGet(), code);
+    }
+
+
+    @POST
+    public Saying sayHello() {
         return new Saying(counter.incrementAndGet(), "hello");
     }
 }
