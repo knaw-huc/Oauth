@@ -1,0 +1,2 @@
+= OAuth test
+This maven module contains test applications for implementing OAuth
