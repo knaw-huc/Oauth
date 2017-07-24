@@ -10,20 +10,20 @@ import com.example.oauthtest.AuthApp;
 
 public class HelloWorldApplication extends Application<HelloWorldConfiguration> {
     public static void main(String[] args) throws Exception {
-	new HelloWorldApplication().run(args);
+		new HelloWorldApplication().run(args);
     }
 
-        @Override
+	@Override
 	public String getName() {
 	    return "hello-world";
 	}
 
-        @Override
+	@Override
 	public void initialize(Bootstrap<HelloWorldConfiguration> bootstrap) {
 	    // nothing to do yet
 	}
 
-        @Override
+	@Override
 	public void run(HelloWorldConfiguration configuration, Environment environment) {
 	    final HelloWorldResource resource = new HelloWorldResource(
 								       configuration.getTemplate(),

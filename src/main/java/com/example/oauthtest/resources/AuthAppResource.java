@@ -57,27 +57,20 @@ public class AuthAppResource {
 	    this.counter = new AtomicLong();
     }
 
-    //@PermitAll
     @GET
     @Path("/callback")
     @Timed
     public Response sayHello2(@QueryParam("code") String code) {
-        if (code != null) {
-            System.out.println(code);
-        }else {
-            System.out.println("no code");
-            //return;
-        }
-
-
         String auth_url = "https://authz.proxy.clariah.nl/oauth/token";
 
 
-        //String clientId = clientId;
-
+        //Bearer token for OAuth2 needs to be in base64 format
+        //and formed by concatanating clientId with clientSecret
         String bearer_token = clientId + ":" + clientSecret;
         byte[] encodedBytes = Base64.encodeBase64(bearer_token.getBytes());
         String encoded_bearer_token = new String(encodedBytes);
+
+        //Redirect URI needs to match one registered with the OAuth server
         String redirect_uri = "http://localhost:3000/auth/example/callback";
 
         Client client = ClientBuilder.newClient();
@@ -85,13 +78,8 @@ public class AuthAppResource {
         MultivaluedHashMap<String, String> formData = new MultivaluedHashMap<String, String>();
         formData.add("code", code);
         formData.add("redirect_uri", redirect_uri);
-        formData.add("client_id", clientId);
-        formData.add("client_secret", clientSecret);
         formData.add("grant_type", "authorization_code");
 
-
-        System.out.println("clientId: " + clientId);
-        System.out.println("clietnsecret: " + clientSecret);
 
         Response response = target.request()
                 .property(ClientProperties.FOLLOW_REDIRECTS, true)
@@ -99,25 +87,21 @@ public class AuthAppResource {
                 .post(Entity.form(formData));
 
         URI uri = UriBuilder.fromUri("auth/example/callback/hello").build();
-
         Map<String, Object> jsonResponse = response.readEntity(Map.class);
 
-
         String auth_code = jsonResponse.get("access_token").toString();
-        System.out.println(auth_code);
+        System.out.println("Auth code received: " + auth_code);
 
         String hello_uri = "http://localhost:3000/auth/example/callback/hello";
 
-        WebTarget target2 = client.target(hello_uri);
+        WebTarget redirect_target = client.target(hello_uri);
 
-        Response response2 = target2.request()
+        Response redirect_response = redirect_target.request()
                 .property(ClientProperties.FOLLOW_REDIRECTS, true)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + auth_code)
                 .get();
 
-        return response2;
-
-
+        return redirect_response;
     }
 
     @PermitAll
@@ -126,4 +110,4 @@ public class AuthAppResource {
     public Saying sayHello() {
         return new Saying(counter.incrementAndGet(), "hello");
     }
-    }
+}

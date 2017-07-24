@@ -24,15 +24,8 @@ public class ExampleOAuthAuthenticator implements Authenticator<String, User> {
 
     @Override
     public Optional<User> authenticate(String credentials) throws AuthenticationException {
-        System.out.println(credentials);
+        System.out.println("Authentication token found! Credentials: " + credentials);
 
-        if (credentials != null) {
-            System.out.println("authentication token found!");
-            return Optional.of(new User(credentials));
-        } else {
-            System.out.println("no authentication token found!");
-            return Optional.absent();
-        }
-
+        return Optional.of(new User(credentials));
     }
 }

@@ -19,9 +19,6 @@ import com.example.oauthtest.User;
 import com.example.oauthtest.AuthAppConfiguration;
 
 
-
-
-
 public class AuthApp extends Application<AuthAppConfiguration> {
     @Override
     public String getName() {

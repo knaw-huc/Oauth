@@ -1,10 +1,9 @@
 function login() {
     /*
-    Authorization URL:
+    Authorization URL example from Playground:
     https://authz.proxy.clariah.nl/oauth/authorize?response_type=code&client_id=cool_app_id
     &scope=groups&state=example&redirect_uri=https://authz-playground.proxy.clariah.nl/redirect
     */
-
     var url = "https://authz.proxy.clariah.nl/oauth/authorize";
     var response_type = "code";
     var client_id = "Timbuctoo_test1";

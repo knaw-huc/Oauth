@@ -7,10 +7,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class AuthAppConfiguration extends Configuration {
-        @NotEmpty
+	@NotEmpty
 	private String template;
 
-        @NotEmpty
+	@NotEmpty
 	private String defaultName = "Stranger";
 
 	@NotEmpty
@@ -29,22 +29,22 @@ public class AuthAppConfiguration extends Configuration {
 		return clientSecret;
 	}
 
-        @JsonProperty
+	@JsonProperty
 	public String getTemplate() {
 	    return template;
 	}
 
-        @JsonProperty
+	@JsonProperty
 	public void setTemplate(String template) {
 	    this.template = template;
 	}
 
-        @JsonProperty
+	@JsonProperty
 	public String getDefaultName() {
 	    return defaultName;
 	}
 
-        @JsonProperty
+	@JsonProperty
 	public void setDefaultName(String name) {
 	    this.defaultName = name;
 	}
