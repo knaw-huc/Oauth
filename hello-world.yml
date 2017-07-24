@@ -7,3 +7,5 @@ server:
   adminConnectors:
   - type: http
     port: 9001
+clientId: ${oauth_clientId}
+clientSecret: ${oauth_clientSecret}

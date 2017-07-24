@@ -7,6 +7,8 @@ import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
 import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
 import com.example.oauthtest.resources.AuthAppResource;
+import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
+import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -18,6 +20,8 @@ import com.example.oauthtest.AuthAppConfiguration;
 
 
 
+
+
 public class AuthApp extends Application<AuthAppConfiguration> {
     @Override
     public String getName() {
@@ -26,6 +30,11 @@ public class AuthApp extends Application<AuthAppConfiguration> {
     
     @Override
     public void initialize(Bootstrap<AuthAppConfiguration> b) {
+		b.setConfigurationSourceProvider(
+				new SubstitutingSourceProvider(
+						b.getConfigurationSourceProvider(),
+						new EnvironmentVariableSubstitutor())
+		);
     }
 
     @Override
@@ -36,7 +45,9 @@ public class AuthApp extends Application<AuthAppConfiguration> {
 
 		final AuthAppResource resource = new AuthAppResource(
 								   				configuration.getTemplate(),
-												configuration.getDefaultName()
+												configuration.getDefaultName(),
+												configuration.getClientId(),
+												configuration.getClientSecret()
 								   			);
 								   environment.jersey().register(resource);
 

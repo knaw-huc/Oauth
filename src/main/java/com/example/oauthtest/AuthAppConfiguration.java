@@ -13,6 +13,22 @@ public class AuthAppConfiguration extends Configuration {
         @NotEmpty
 	private String defaultName = "Stranger";
 
+	@NotEmpty
+	private String clientId;
+
+	@JsonProperty
+	public String getClientId() {
+		return clientId;
+	}
+
+	@NotEmpty
+	private String clientSecret;
+
+	@JsonProperty
+	public String getClientSecret() {
+		return clientSecret;
+	}
+
         @JsonProperty
 	public String getTemplate() {
 	    return template;

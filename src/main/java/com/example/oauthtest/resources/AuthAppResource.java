@@ -5,14 +5,38 @@ import com.google.common.base.Optional;
 import com.codahale.metrics.annotation.Timed;
 
 import com.example.oauthtest.ExampleOAuthAuthenticator;
+import org.glassfish.jersey.client.ClientProperties;
+import org.hibernate.validator.internal.util.privilegedactions.GetMethod;
+import sun.net.www.http.HttpClient;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
+import java.net.MalformedURLException;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.client.Entity;
+import org.apache.commons.codec.binary.Base64;
+
+import java.net.URI;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 @Path("/auth/example")
@@ -20,11 +44,16 @@ import java.util.concurrent.atomic.AtomicLong;
 public class AuthAppResource {
     private final String template;
     private final String defaultName;
+    private final String clientId;
+    private final String clientSecret;
     private final AtomicLong counter;
 
-    public AuthAppResource(String template, String defaultName) {
+
+    public AuthAppResource(String template, String defaultName, String clientId, String clientSecret) {
 	    this.template = template;
 	    this.defaultName = defaultName;
+	    this.clientId = clientId;
+	    this.clientSecret = clientSecret;
 	    this.counter = new AtomicLong();
     }
 
@@ -32,15 +61,69 @@ public class AuthAppResource {
     @GET
     @Path("/callback")
     @Timed
-    public Saying sayHello2(@QueryParam("code") String code) {
-        System.out.println(code);
-        
-        return new Saying(counter.incrementAndGet(), code);
+    public Response sayHello2(@QueryParam("code") String code) {
+        if (code != null) {
+            System.out.println(code);
+        }else {
+            System.out.println("no code");
+            //return;
+        }
+
+
+        String auth_url = "https://authz.proxy.clariah.nl/oauth/token";
+
+
+        //String clientId = clientId;
+
+        String bearer_token = clientId + ":" + clientSecret;
+        byte[] encodedBytes = Base64.encodeBase64(bearer_token.getBytes());
+        String encoded_bearer_token = new String(encodedBytes);
+        String redirect_uri = "http://localhost:3000/auth/example/callback";
+
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(auth_url);
+        MultivaluedHashMap<String, String> formData = new MultivaluedHashMap<String, String>();
+        formData.add("code", code);
+        formData.add("redirect_uri", redirect_uri);
+        formData.add("client_id", clientId);
+        formData.add("client_secret", clientSecret);
+        formData.add("grant_type", "authorization_code");
+
+
+        System.out.println("clientId: " + clientId);
+        System.out.println("clietnsecret: " + clientSecret);
+
+        Response response = target.request()
+                .property(ClientProperties.FOLLOW_REDIRECTS, true)
+                .header(HttpHeaders.AUTHORIZATION, "Basic " +  encoded_bearer_token)
+                .post(Entity.form(formData));
+
+        URI uri = UriBuilder.fromUri("auth/example/callback/hello").build();
+
+        Map<String, Object> jsonResponse = response.readEntity(Map.class);
+
+
+        String auth_code = jsonResponse.get("access_token").toString();
+        System.out.println(auth_code);
+
+        String hello_uri = "http://localhost:3000/auth/example/callback/hello";
+
+        WebTarget target2 = client.target(hello_uri);
+
+        Response response2 = target2.request()
+                .property(ClientProperties.FOLLOW_REDIRECTS, true)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + auth_code)
+                .get();
+
+        return response2;
+
+
     }
 
-
-    @POST
+    @PermitAll
+    @GET
+    @Path("/callback/hello")
     public Saying sayHello() {
         return new Saying(counter.incrementAndGet(), "hello");
     }
-}
+    }
