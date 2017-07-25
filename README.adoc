@@ -49,7 +49,7 @@ system you can use the following command from within the clariahtest folder:
 
  python -m SimpleHTTPServer 5000
 
-This will make the JS application avaialbe at URL: http://localhost:5000/
+This will make the JS application available at URL: http://localhost:5000/
 
 == Running the Dropwizard application
 There is a startup script on the main project directory (/huygens/Oauth/) that you can use to start the application on

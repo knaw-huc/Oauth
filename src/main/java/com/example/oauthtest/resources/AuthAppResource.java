@@ -63,7 +63,6 @@ public class AuthAppResource {
     public Response authenticate(@QueryParam("code") String code) {
         String auth_url = "https://authz.proxy.clariah.nl/oauth/token";
 
-
         //Bearer token for OAuth2 needs to be in base64 format
         //and formed by concatanating clientId with clientSecret
         String bearer_token = clientId + ":" + clientSecret;
