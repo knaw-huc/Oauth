@@ -1,2 +1,65 @@
 = OAuth test
-This maven module contains test applications for implementing OAuth
+
+This maven module contains test applications for implementing OAuth 2.0 authentication in Dropwizard using the
+Clariah OAuth server. This is a part of the preliminary work done before implementing OAuth 2.0 authentication in
+Timbuctoo.
+
+= References Used
+- https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2[An Introduction to OAuth2]
+- https://aaronparecki.com/oauth-2-simplified/[OAuth2 Simplified]
+
+= Clariah Authorization Server Playground
+Playground that allows you to try out the OAuth server for Clariah without having to
+write code.
+
+Link: https://authz-playground.proxy.clariah.nl/
+
+= Applications
+
+== Clariahtest Javascript application
+Located under the *clariahtest* directory, this is the Javascript client application. It consists of a login button,
+which when clicked by the user, allows the user to login to the Clariah server and receive an authorization code.
+Once the authorization code is received the server redirects to the dropwizard application.
+
+== Dropwizard OAuth application
+The dropwizard application expects a "code" parameter, that should be present if accessed through the above-mentioned
+ Javascript client. The applications sends a request for authorization token to the Clariah OAuth server using the
+ client credentials stored on the system and the newly available authorization code. If a proper OAuth access token
+ is received from this transaction, the application redirects to the "hello world" page that should be now accessible.
+ Trying to access the "hello world" page without an access token should give a "Credentials are required to access this
+ resource" error message.
+
+= Usage Instructions
+
+== Running the Javascript application
+To run the Javascript application you will have to serve it on localhost. If you have Python 2.7.x installed on your
+system you can use the following command from within the clariahtest folder:
+
+ python -m SimpleHTTPServer 5000
+
+This will make the JS application avaialbe at URL: http://localhost:5000/
+
+== Running the Dropwizard application
+There is a startup script on the main project directory (/huygens/Oauth/) that you can use to start the application on
+localhost 3000:
+
+ ./start.sh
+
+You can now try to directly access the *Hello World* application at http://localhost:3000/auth/example/callback/hello
+(and that should give you a "Credentials are required.." error) as you are not authenticated via OAuth.
+
+== Usage
+After starting the servers as mentioned above you can:
+
+- Access the Javascript application at URL: http://localhost:5000/ from your web-browser
+- Click on the Login button. This should redirect you to the Clariah login server
+- Complete the login process using your credentials.
+- This should redirect you to the dropwizard application with the required credentials to access
+the 'hello world' resource.
+
+= FAQ/Help
+
+- The callback URI used has to be *http://localhost:3000/auth/example/callback* as that is the one registered with
+the Clariah OAuth server.
+
+-   
