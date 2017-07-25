@@ -17,7 +17,6 @@ import com.google.common.base.Optional;
 
 import org.jvnet.hk2.internal.SystemDescriptor;
 
-
 import java.util.UUID;
 
 public class ExampleOAuthAuthenticator implements Authenticator<String, User> {

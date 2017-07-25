@@ -60,7 +60,7 @@ public class AuthAppResource {
     @GET
     @Path("/callback")
     @Timed
-    public Response sayHello2(@QueryParam("code") String code) {
+    public Response authenticate(@QueryParam("code") String code) {
         String auth_url = "https://authz.proxy.clariah.nl/oauth/token";
 
 
@@ -79,7 +79,6 @@ public class AuthAppResource {
         formData.add("code", code);
         formData.add("redirect_uri", redirect_uri);
         formData.add("grant_type", "authorization_code");
-
 
         Response response = target.request()
                 .property(ClientProperties.FOLLOW_REDIRECTS, true)
@@ -104,6 +103,8 @@ public class AuthAppResource {
         return redirect_response;
     }
 
+    //@PermitAll allows all users who are6 authenticated via OAuth to reach
+    //the resource
     @PermitAll
     @GET
     @Path("/callback/hello")

@@ -73,5 +73,3 @@ the 'hello world' resource.
 
 - The callback URI used has to be *http://localhost:3000/auth/example/callback* as that is the one registered with
 the Clariah OAuth server.
-
--
