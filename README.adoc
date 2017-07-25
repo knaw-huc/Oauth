@@ -1,7 +1,7 @@
 = OAuth test
 
 This maven module contains test applications for implementing OAuth 2.0 authentication in Dropwizard using the
-Clariah OAuth server. This is a part of the preliminary work done before implementing OAuth 2.0 authentication in
+Clariah OAuth server. This is a part of the preliminary work done for implementing OAuth 2.0 authentication in
 Timbuctoo.
 
 = References Used
@@ -29,7 +29,19 @@ The dropwizard application expects a "code" parameter, that should be present if
  Trying to access the "hello world" page without an access token should give a "Credentials are required to access this
  resource" error message.
 
+The simple Dropwizard Authenticator used is *ExampleOAuthAuthenticator.java* and it is initialized in *AuthApp.java*.
+The resource file *AuthAppResource.java* file in *com.example.oauthtest.resources* does most of the work communicating
+with the Clariah OAuth server. When a resource is marked as *@PermitAll* it means that the resource is available
+to any user as long as they are authenticated by OAuth.
+
 = Usage Instructions
+
+== Add client application information to your evnironment
+Before you are able to use the application you will need to add the client id and client secret to your environment.
+In linux you can do as follows:
+
+ > export oauth_clientId="<your_client_id_here>"
+ > export oauth_clientSecret="<your_client_secret_here>"
 
 == Running the Javascript application
 To run the Javascript application you will have to serve it on localhost. If you have Python 2.7.x installed on your
@@ -62,4 +74,4 @@ the 'hello world' resource.
 - The callback URI used has to be *http://localhost:3000/auth/example/callback* as that is the one registered with
 the Clariah OAuth server.
 
--   
+-
