@@ -3,7 +3,7 @@ defaultName: Stranger
 server:
   applicationConnectors:
   - type: http
-    port: 3000
+    port: 8084
   adminConnectors:
   - type: http
     port: 9001
