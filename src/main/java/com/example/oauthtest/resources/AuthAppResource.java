@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 
-//@Path("/auth/example")
 @Path("/redirect")
 @Produces(MediaType.APPLICATION_JSON)
 public class AuthAppResource {
@@ -44,8 +43,6 @@ public class AuthAppResource {
   }
 
   @GET
-  //@Path("/callback")
-  //@Path("/redirect")
   @Timed
   public Response authenticate(@QueryParam("code") String code) {
     //String auth_url = "https://authz.proxy.clariah.nl/oauth/token";
@@ -77,7 +74,6 @@ public class AuthAppResource {
     String auth_code = jsonResponse.get("access_token").toString();
     System.out.println("Auth code received: " + auth_code);
 
-    //String hello_uri = "http://localhost:8084/auth/example/callback/hello";
     String hello_uri = "http://localhost:8084/redirect/hello";
 
     WebTarget redirect_target = client.target(hello_uri);

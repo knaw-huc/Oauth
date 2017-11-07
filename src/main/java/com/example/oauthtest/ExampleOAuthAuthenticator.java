@@ -1,4 +1,3 @@
-
 package com.example.oauthtest;
 
 import com.github.scribejava.core.model.Response;
@@ -21,10 +20,10 @@ import java.util.UUID;
 
 public class ExampleOAuthAuthenticator implements Authenticator<String, User> {
 
-    @Override
-    public Optional<User> authenticate(String credentials) throws AuthenticationException {
-        System.out.println("Authentication token found! Credentials: " + credentials);
+  @Override
+  public Optional<User> authenticate(String credentials) throws AuthenticationException {
+    System.out.println("Authentication token found! Credentials: " + credentials);
 
-        return Optional.of(new User(credentials));
-    }
+    return Optional.of(new User(credentials));
+  }
 }
